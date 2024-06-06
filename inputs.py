@@ -1,7 +1,10 @@
-def validar_dni(dni:int) -> bool:
+def validar_dni(dni: int) -> bool:
     if dni is None:
         return False
-    return dni.isdigit() and len(dni) == 8 and 4000000 <=int(dni) <= 99999999
+    if dni.isdigit() and len(dni) == 8:
+        dni = "0" * (8 - len(dni)) + dni
+        return 4000000 <= int(dni) <= 99999999
+    return False
         
 
 def validar_altura(altura: int) -> bool:

@@ -6,3 +6,4 @@ id,nombre,apellido,dni,grupo_sanguineo,peso,altura,edad,eliminado
 5,Manolo,Carroz,35019994,AB-,56.0,56,56,
 6,Pepa,Pig,36140002,AB-,45.0,45,45,
 6,Popopop,Popopop,34777777,0+,56.0,56,22,
+7,GGG,GGG,99999999,0+,45.0,45,45,
