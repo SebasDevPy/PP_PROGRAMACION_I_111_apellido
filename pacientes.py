@@ -46,16 +46,16 @@ def mostrar_pacientes(lista_pacientes):
 
 def mostrar_un_paciente(un_paciente):
     print(f'{"ID":<10} {"Nombre":<20} {"Apellido":<20} {"DNI":<10} {"Grupo Sanguineo":<20} {"Peso":<10} {"Altura":<10} {"Edad":<10}')
-    print(f'{un_paciente["id"]:<10} {un_paciente["nombre"]:<20} {un_paciente["apellido"]:<20} {un_paciente["dni"]:<10} {un_paciente["grupo sanguineo"]:<20} {un_paciente["peso"]:<10} {un_paciente["altura"]:<10} {un_paciente["edad"]:<10}')
+    print(f'{un_paciente["id"]:<10} {un_paciente["nombre"]:<20} {un_paciente["apellido"]:<20} {un_paciente["dni"]:<10} {un_paciente["grupo_sanguineo"]:<20} {un_paciente["peso"]:<10} {un_paciente["altura"]:<10} {un_paciente["edad"]:<10}')
 
 
 def deshacer_ultimo_cambio(dni, lista_pacientes, historial):
-    if dni in historial and historial[dni]:
-        ultimo_cambio = historial[dni].pop()
+    if id in historial:
+        ultimo_cambio = historial[id].pop()
         for paciente in lista_pacientes:
-            if paciente["dni"] == dni:
+            if paciente["id"] == id:
                 paciente.update(ultimo_cambio)
-        print("Ultimo cambio deshecho exitosamente")
+        print("Último cambio deshecho exitosamente.")
     else:
         print("No hay cambios que deshacer.")
 
@@ -126,47 +126,63 @@ def modificar_paciente(dni, lista_pacientes, historial):
     elif opcion_deshacer == 2:
         print("Continuar...")
         
-
-def ordenar_pacientes(lista_pacientes, criterio, direccion):
+def ordenar_pacientes(lista_pacientes, direccion):
+    opciones = {
+        "1": "nombre",
+        "2": "apellido",
+        "3": "altura",
+        "4": "grupo_sanguineo"
+    }
     
-    criterios_validos = "nombre", "apellido", "altura", "grupo sanguineo"
-    if criterio != criterios_validos:
-        print("Solo puede ordenar por: nombre, apellido, altura o grupo sanguineo")
+    print("Seleccione el criterio de orden:")
+    print("1. Nombre")
+    print("2. Apellido")
+    print("3. Altura")
+    print("4. Grupo Sanguineo")
+    opcion = input("Ingrese el número de la opción: ")
+
+    if opciones == False:
+        print("Opcion no valida")
+        return
+
+    criterio = opciones.get(opcion)
     
-    paciente = len(lista_pacientes)
-    for i in range(paciente - 1):
-        for j in range(0, paciente - i - 1):
-            if direccion == "ascendente":
-                if lista_pacientes[j][criterio] > lista_pacientes[j + 1][criterio]:
-                    lista_pacientes[j], lista_pacientes[j + 1] = lista_pacientes[j + 1], lista_pacientes[j]
-            elif direccion == "descendente":
-                if lista_pacientes[j][criterio] < lista_pacientes[j + 1][criterio]:
-                    lista_pacientes[j], lista_pacientes[j + 1] = lista_pacientes[j + 1], lista_pacientes[j]
+    if criterio:
+        paciente = len(lista_pacientes)
+        for i in range(paciente - 1):
+            for j in range(0, paciente - i - 1):
+                if direccion == "ascendente":
+                    if str(lista_pacientes[j][criterio]) > str(lista_pacientes[j + 1][criterio]):
+                        lista_pacientes[j], lista_pacientes[j + 1] = lista_pacientes[j + 1], lista_pacientes[j]
+                elif direccion == "descendente":
+                    if str(lista_pacientes[j][criterio]) < str(lista_pacientes[j + 1][criterio]):
+                        lista_pacientes[j], lista_pacientes[j + 1] = lista_pacientes[j + 1], lista_pacientes[j]
+        mostrar_pacientes(lista_pacientes)
+    else:
+        print("Opción no válida.")
 
-    mostrar_pacientes(lista_pacientes)
-
-def eliminar_paciente(lista_pacientes, dni, pacientes_eliminados, pacientes_no_eliminados):
+def eliminar_paciente(lista_pacientes, dni, pacientes_eliminados):
     paciente_encontrado = False 
     for paciente in lista_pacientes:
         if paciente["dni"] == dni:
-            confirmacion = input(f"¿Está seguro de eliminar al paciente {paciente} con el número de DNI {dni}? s/n")
+            confirmacion = input(f"¿Está seguro de eliminar al paciente {paciente['nombre']} {paciente['apellido']} con el número de DNI {dni}? s/n: ")
             if confirmacion.lower() == "s":
-                paciente["eliminado"] = True
+                paciente["eliminado"] = True 
                 print(f"Paciente con DNI {dni} eliminado")
                 pacientes_eliminados.append(paciente)
+                paciente_encontrado = True
+                break
             else:
                 print("Eliminación cancelada")
-            paciente_encontrado = True
-            break
-    else:
-        print("Paciente no encontrado")
-       
-        if paciente_encontrado == False:  
-            pacientes_no_eliminados.append(paciente)
+                break
     
-    return pacientes_no_eliminados, pacientes_eliminados
+    if paciente_encontrado == False:
+        print(f"No se encontró ningún paciente con el DNI {dni}.")
+    
+    return pacientes_eliminados
 
 
+        
 def buscar_paciente_por_dni(lista_pacientes):
     dni = input("Ingrese el DNI del paciente")
     for paciente in lista_pacientes:

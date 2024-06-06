@@ -1,2 +1,8 @@
-id,nombre,apellido,dni,grupo_sanguineo,peso,altura,edad
-3,Maria,Juana,25478003,0-,60.0,160,23
+id,nombre,apellido,dni,grupo_sanguineo,peso,altura,edad,eliminado
+2,RRR,RRR,54789456,AB+,55.0,55,55,
+3,JJJ,JJJ,54789456,0+,33.0,33,33,
+2,RRR,RRR,54789456,AB+,55.0,55,55,
+5,POP,POP,78945644,AB+,80.0,80,80,
+5,Manolo,Carroz,35019994,AB-,56.0,56,56,
+6,Pepa,Pig,36140002,AB-,45.0,45,45,
+6,Popopop,Popopop,34777777,0+,56.0,56,22,
