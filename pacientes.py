@@ -27,7 +27,7 @@ def cargar_paciente(lista_pacientes, contador_pacientes_id):
         datos_paciente["nombre"],
         datos_paciente["apellido"],
         datos_paciente["dni"],
-        datos_paciente["grupo_sanguineo"],
+        datos_paciente["grupo sanguineo"],
         datos_paciente["peso"],
         datos_paciente["altura"],
         datos_paciente["edad"]
@@ -41,7 +41,8 @@ def cargar_paciente(lista_pacientes, contador_pacientes_id):
 def mostrar_pacientes(lista_pacientes):
     print(f'{"ID":<10} {"Nombre":<20} {"Apellido":<20} {"DNI":<10} {"Grupo Sanguineo":<20} {"Peso":<10} {"Altura":<10} {"Edad":<10}')
     for paciente in lista_pacientes:
-        print(f'{paciente["id"]:<10} {paciente["nombre"]:<20} {paciente["apellido"]:<20} {paciente["dni"]:<10} {paciente["grupo_sanguineo"]:<20} {paciente["peso"]:<10} {paciente["altura"]:<10} {paciente["edad"]:<10}')
+       print(f'{paciente["id"]:<10} {paciente["nombre"]:<20} {paciente["apellido"]:<20} {paciente["dni"]:<10} {paciente["grupo_sanguineo"]:<20} {paciente["peso"]:<10} {paciente["altura"]:<10} {paciente["edad"]:<10}')
+
 
 def mostrar_un_paciente(un_paciente):
     print(f'{"ID":<10} {"Nombre":<20} {"Apellido":<20} {"DNI":<10} {"Grupo Sanguineo":<20} {"Peso":<10} {"Altura":<10} {"Edad":<10}')
@@ -145,24 +146,26 @@ def ordenar_pacientes(lista_pacientes, criterio, direccion):
     mostrar_pacientes(lista_pacientes)
 
 def eliminar_paciente(lista_pacientes, dni, pacientes_eliminados, pacientes_no_eliminados):
-    paciente_encotrado = False
+    paciente_encontrado = False 
     for paciente in lista_pacientes:
         if paciente["dni"] == dni:
-            confirmacion = input(f"Esta seguro de eliminar al paciente {paciente} con el numero de DNI {dni}? s/n")
+            confirmacion = input(f"¿Está seguro de eliminar al paciente {paciente} con el número de DNI {dni}? s/n")
             if confirmacion.lower() == "s":
                 paciente["eliminado"] = True
                 print(f"Paciente con DNI {dni} eliminado")
                 pacientes_eliminados.append(paciente)
             else:
-                print("Eliminacion cancelada")
-            paciente_encotrado = True
+                print("Eliminación cancelada")
+            paciente_encontrado = True
             break
     else:
         print("Paciente no encontrado")
-        if paciente_encotrado == False:
+       
+        if paciente_encontrado == False:  
             pacientes_no_eliminados.append(paciente)
     
     return pacientes_no_eliminados, pacientes_eliminados
+
 
 def buscar_paciente_por_dni(lista_pacientes):
     dni = input("Ingrese el DNI del paciente")

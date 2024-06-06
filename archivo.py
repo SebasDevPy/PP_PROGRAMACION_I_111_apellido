@@ -14,7 +14,7 @@ def leer_pacientes_desde_csv(lista_pacientes, contador_pacientes_id):
     """
 
     try:
-        with open('pacientes.csv', mode='r', newline='') as file:
+        with open("pacientes.csv", mode="r", newline="", encoding = "utf-8") as file:
             reader = csv.DictReader(file)
             for row in reader:
                 paciente_id = int(row["id"])
@@ -25,13 +25,13 @@ def leer_pacientes_desde_csv(lista_pacientes, contador_pacientes_id):
                     "nombre": row["nombre"],
                     "apellido": row["apellido"],
                     "dni": row["dni"],
-                    "grupo sanguineo": row["grupo sanguineo"],
+                    "grupo_sanguineo": row["grupo_sanguineo"],
                     "peso": float(row["peso"]),
                     "altura": row["altura"],
                     "edad": row["edad"]
                 }
                 lista_pacientes.append(paciente)
-            contador_pacientes_id += 1 
+         
     except FileNotFoundError:
         print("Archivo pacientes.csv no encontrado. Se iniciará con una lista vacía.")
     except Exception as e:
@@ -48,10 +48,11 @@ def guardar_pacientes_en_csv(lista_pacientes):
     """
 
     try:
-        with open('pacientes.csv', mode='w', newline='') as file:
-            fieldnames = ["id", "nombre", "apellido", "dni", "grupo sanguineo", "peso", "altura", "edad"]
+        with open("pacientes.csv", mode= "w", newline="" , encoding= "utf-8 ") as file:
+            fieldnames = ["id", "nombre", "apellido", "dni", "grupo_sanguineo", "peso", "altura", "edad"]
             writer = csv.DictWriter(file, fieldnames=fieldnames)
-            writer.writeheader()
+            if file.tell() == 0:
+                writer.writeheader()
             for paciente in lista_pacientes:
                 writer.writerow(paciente)
         print("Datos guardados correctamente en pacientes.csv")
@@ -68,7 +69,7 @@ def guardar_pacientes_eliminados_en_json(lista_pacientes_eliminados):
     """
         
     try:
-        with open('Bajas.json', mode='w') as file:
+        with open("Bajas.json" , mode="w", encoding= "utf-8") as file:
             json.dump(lista_pacientes_eliminados, file, indent=4)
         print("Datos guardados correctamente en Bajas.json")
     except Exception as e:
@@ -86,7 +87,7 @@ def cargar_pacientes_eliminados_desde_json(lista_pacientes_eliminados):
     """
 
     try:
-        with open('Bajas.json', mode='r') as file:
+        with open("Bajas.json" , mode= "r", encoding= "utf-8") as file:
             lista_pacientes_eliminados = json.load(file)
         print("Datos cargados correctamente desde Bajas.json")
     except FileNotFoundError:

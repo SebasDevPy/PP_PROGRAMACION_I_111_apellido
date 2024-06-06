@@ -10,7 +10,7 @@ def mostrar_menu():
     print("5. Ordenar pacientes")
     print("6. Buscar paciente por DNI")
     print("7. Calcular promedio")
-    print("8. Salir")
+    print("8. Guardar y Salir")
 
 def main():
     lista_pacientes, contador_pacientes_id= leer_pacientes_desde_csv([], 0)
@@ -34,7 +34,7 @@ def main():
             modificar_paciente(dni_modificar, lista_pacientes, historial)
         elif opcion == "3":
             dni_eliminar = int(input("Ingrese el DNI del paciente a eliminar: "))
-            lista_pacientes, pacientes_eliminados = eliminar_paciente(lista_pacientes, dni_eliminar, pacientes_eliminados, pacientes_no_eliminados)
+            lista_pacientes, lista_pacientes_eliminados = eliminar_paciente(lista_pacientes, dni_eliminar, lista_pacientes_eliminados, pacientes_no_eliminados)
         elif opcion == "4":
             mostrar_pacientes(lista_pacientes)
         elif opcion == "5":
