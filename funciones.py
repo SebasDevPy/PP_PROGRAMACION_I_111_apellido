@@ -1,43 +1,42 @@
 from inputs import *
 
-def ingreso_datos_pacientes(lista_pacientes, contador_pacientes_id):
+def ingreso_datos_pacientes(lista_pacientes, contador_pacientes_id, paciente_ingresado):
     while True:
         nombre = input("Ingrese el nombre del paciente: ")
-        if validar_nombre_apellido(nombre) == False:
-            print("El nombre debe comenzar con mayúscula, solo se permiten letras (no más de 20)")
-            print("Ingreso inválido")
+        while validar_nombre_apellido(nombre) == False:
+            print("El nombre debe comenzar con mayúscula y contener solo letras (máx. 20 caracteres).")
             continue
-        
+
         apellido = input("Ingrese el apellido del paciente: ")
-        if validar_nombre_apellido(apellido) == False:
-            print("El apellido debe comenzar con mayúscula, solo se permiten letras (no más de 20)")
-            continue
+        while  validar_nombre_apellido(apellido) == False:
+            print("El apellido debe comenzar con mayúscula y contener solo letras (máx. 20 caracteres).")
+            apellido = input("Ingrese nuevamente el apellido del paciente: ")
 
         edad = input("Ingrese la edad del paciente: ")
-        if validar_edad(edad) == False:
-            print("La edad del paciente debe ser entre 1 y 120")
-            continue
+        while  validar_edad(edad) == False:
+            print("La edad del paciente debe ser un número entre 1 y 120.")
+            edad = input("Ingrese nuevamente la edad del paciente: ")
 
         altura = input("Ingrese la altura del paciente en cm: ")
-        if validar_altura(altura) == False:
-            print("La altura debe ser entre 30 y 230 cm")
-            continue
+        while  validar_altura(altura) == False:
+            print("La altura del paciente debe ser un número entre 30 y 230.")
+            altura = input("Ingrese nuevamente la altura del paciente en cm: ")
 
         peso = input("Ingrese el peso del paciente: ")
-        if validar_peso(peso) == False:
-            print("El peso del paciente debe ser entre 10.0 y 300.0 kg")
-            continue
+        while  validar_peso(peso) == False:
+            print("El peso del paciente debe ser un número entre 10.0 y 300.0.")
+            peso = input("Ingrese nuevamente el peso del paciente: ")
 
         grupo_sanguineo = input("Ingrese el grupo sanguíneo del paciente: ")
-        if validar_grupo_sanguineo(grupo_sanguineo) == False:
-            print("El grupo sanguíneo debe ser: A, B, AB, 0 + o -")
-            continue
+        while  validar_grupo_sanguineo(grupo_sanguineo) == False:
+            print("El grupo sanguíneo del paciente debe ser A+, A-, B+, B-, AB+, AB-, 0+ o 0-.")
+            grupo_sanguineo = input("Ingrese nuevamente el grupo sanguíneo del paciente: ")
 
         dni = input("Ingrese el DNI del paciente: ")
-        if validar_dni(dni) == False:
-            print("El DNI debe tener 8 dígitos y estar entre 4000000 y 99999999")
-            continue
-        
+        while  validar_dni(dni) == False:
+            print("El DNI del paciente debe ser un número de 8 dígitos entre 4000000 y 99999999.")
+            dni = input("Ingrese nuevamente el DNI del paciente: ")
+
         break
 
     paciente = {
@@ -54,4 +53,6 @@ def ingreso_datos_pacientes(lista_pacientes, contador_pacientes_id):
     lista_pacientes.append(paciente)
     contador_pacientes_id += 1
 
-    return lista_pacientes, contador_pacientes_id
+    paciente_ingresado = True  
+
+    return lista_pacientes, contador_pacientes_id, paciente_ingresado

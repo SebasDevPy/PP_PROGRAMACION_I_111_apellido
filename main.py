@@ -16,9 +16,8 @@ def main():
     lista_pacientes, contador_pacientes_id= leer_pacientes_desde_csv([], 0)
     lista_pacientes_eliminados = cargar_pacientes_eliminados_desde_json ([])
     historial = {}
-    orden_inverso = []
-    orden = []
     pacientes_no_eliminados = []
+    paciente_ingresado = False
 
     while True:
 
@@ -26,7 +25,10 @@ def main():
         opcion = input(" Seleccione una opcion: ")
 
         if opcion == "1":
-            lista_pacientes, contador_pacientes_id = ingreso_datos_pacientes(lista_pacientes, contador_pacientes_id)
+            lista_pacientes, contador_pacientes_id, paciente_ingresado  = ingreso_datos_pacientes(lista_pacientes, contador_pacientes_id, paciente_ingresado)
+        elif paciente_ingresado == False:
+            print("Debe de ingresar un paciente para poder avanzar en el menu.")
+            continue
         elif opcion == "2":
             dni_modificar = int(input("Ingrese el DNI del paciente el cual quere modificar: "))
             modificar_paciente(dni_modificar, lista_pacientes, historial)
