@@ -24,7 +24,7 @@ def leer_pacientes_desde_csv(lista_pacientes, contador_pacientes_id):
                     "id": paciente_id,
                     "nombre": row["nombre"],
                     "apellido": row["apellido"],
-                    "dni": row["dni"],
+                    "dni": str(row["dni"]),
                     "grupo_sanguineo": row["grupo_sanguineo"],
                     "peso": float(row["peso"]),
                     "altura": row["altura"],
@@ -55,6 +55,7 @@ def guardar_pacientes_en_csv(lista_pacientes):
             writer = csv.DictWriter(file, fieldnames=fieldnames)
             writer.writeheader()
             for paciente in lista_pacientes:
+                paciente["dni"] = str(paciente["dni"])
                 writer.writerow(paciente)
         print("Datos guardados correctamente en pacientes.csv")
     except Exception as e:

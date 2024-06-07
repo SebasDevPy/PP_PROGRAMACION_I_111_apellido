@@ -62,11 +62,17 @@ def deshacer_ultimo_cambio(dni, lista_pacientes, historial):
 
 def modificar_paciente(dni, lista_pacientes, historial):
     paciente_encontrado = False
-    for paciente in lista_pacientes:
-        if paciente ["dni"] == dni:
-            paciente_encontrado = True
-            historial[dni] = historial.get(dni, [])
-            historial[dni].append(paciente)
+    dni = str(dni)
+    pacientes_con_mismo_dni = [paciente for paciente in lista_pacientes if paciente["dni"] == dni]
+    
+    if len(pacientes_con_mismo_dni) == 0:
+        print("No se encontraron pacientes con el DNI especificado.")
+        return
+
+    for paciente in pacientes_con_mismo_dni:
+        paciente_encontrado = True
+        historial[dni] = historial.get(dni, [])
+        historial[dni].append(paciente)
 
         print(f"Paciente encontrado: {paciente_encontrado}")
         mostrar_un_paciente(paciente)
@@ -80,51 +86,66 @@ def modificar_paciente(dni, lista_pacientes, historial):
         print("7. Edad")
         opcion = input("Ingrese el numero de la opcion: ")
 
-        opciones = {"1": "Nombre", "2": "Apellido", "3": "DNI", "4": "Grupo Sanguineo", "5": "Peso", "6": "Altura", "7": "Edad"}
+        opciones = {"1": "Nombre", "2": "Apellido", "3": "DNI", "4": "Grupo Sanguineo", "5": "Peso",
+                    "6": "Altura", "7": "Edad"}
 
-        if opciones in opciones:
+        if opcion in opciones:
             campo = opciones[opcion]
-            nuevo_valor = input(f"Ingrese el nuevo valor para {campo}")
+            nuevo_valor = input(f"Ingrese el nuevo valor para {campo}: ")
 
-            if campo == "nombre" or campo == "apellido":
+            if campo.lower() == "nombre" or campo.lower() == "apellido":
                 if validar_nombre_apellido(nuevo_valor):
-                    paciente[campo] = nuevo_valor
-                paciente[campo] = nuevo_valor
-            elif campo == "dni":
+                    paciente[campo.lower()] = nuevo_valor.title()
+                else:
+                    print("Nombre o apellido invalido.")
+            elif campo.lower() == "dni":
                 if validar_dni(nuevo_valor):
-                    paciente[campo] = nuevo_valor
-                paciente["dni"] = nuevo_valor
-            elif campo == "grupo sanguineo":
+                    paciente[campo.lower()] = str(nuevo_valor)
+                else:
+                    print("DNI invalido.")
+            elif campo.lower() == "grupo sanguineo":
                 if validar_grupo_sanguineo(nuevo_valor):
-                    paciente[campo] = nuevo_valor
-            elif campo == "peso":
+                    paciente[campo.lower()] = nuevo_valor.upper()
+                else:
+                    print("Grupo sanguineo invalido.")
+            elif campo.lower() == "peso":
                 if validar_peso(nuevo_valor):
-                    paciente[campo] = float(nuevo_valor)
-            elif campo == "altura":
+                    paciente[campo.lower()] = float(nuevo_valor)
+                else:
+                    print("Peso invalido.")
+            elif campo.lower() == "altura":
                 if validar_altura(nuevo_valor):
-                    paciente[campo] = int(nuevo_valor)
+                    paciente[campo.lower()] = int(nuevo_valor)
                 else:
-                    print("Seleccion invalida")
-            elif campo == "edad":
+                    print("Altura invalida.")
+            elif campo.lower() == "edad":
                 if validar_edad(nuevo_valor):
-                    paciente[campo] = int(nuevo_valor)
+                    paciente[campo.lower()] = int(nuevo_valor)
                 else:
-                    print("Seleccion invalida")
+                    print("Edad invalida.")
+
+            deshacer = input("¿Desea deshacer el último cambio? (s/n): ")
+            if deshacer.lower() == "s":
+                deshacer_ultimo_cambio(dni, lista_pacientes, historial)
         else:
             print("Opcion no valida")
-        break
-    if paciente_encontrado is False:
+
+        continuar = input("¿Desea editar otro campo? (s/n): ")
+        if continuar.lower() != "s":
+            return
+
+    if len(pacientes_con_mismo_dni) == 0:
         print("Paciente no encontrado")
-        return
-    
+
     print("¿Desea deshacer el ultimo cambio?")
     print("1. Si")
     print("2. No")
-    opcion_deshacer = int(input("Ingresa el numero de la opcion: "))
-    if opcion_deshacer == 1:
+    opcion_deshacer = input("Ingresa el numero de la opcion: ")
+    if opcion_deshacer == "1":
         deshacer_ultimo_cambio(dni, lista_pacientes, historial)
-    elif opcion_deshacer == 2:
+    elif opcion_deshacer == "2":
         print("Continuar...")
+
         
 def ordenar_pacientes(lista_pacientes, direccion):
     opciones = {
@@ -140,10 +161,6 @@ def ordenar_pacientes(lista_pacientes, direccion):
     print("3. Altura")
     print("4. Grupo Sanguineo")
     opcion = input("Ingrese el número de la opción: ")
-
-    if opciones == False:
-        print("Opcion no valida")
-        return
 
     criterio = opciones.get(opcion)
     
@@ -163,6 +180,11 @@ def ordenar_pacientes(lista_pacientes, direccion):
 
 def eliminar_paciente(lista_pacientes, dni, pacientes_eliminados):
     paciente_encontrado = False 
+    if dni.isdigit() == False:
+        print("DNI invalido")
+        return pacientes_eliminados
+    dni = str(dni)
+
     for paciente in lista_pacientes:
         if paciente["dni"] == dni:
             confirmacion = input(f"¿Está seguro de eliminar al paciente {paciente['nombre']} {paciente['apellido']} con el número de DNI {dni}? s/n: ")
@@ -180,8 +202,6 @@ def eliminar_paciente(lista_pacientes, dni, pacientes_eliminados):
         print(f"No se encontró ningún paciente con el DNI {dni}.")
     
     return pacientes_eliminados
-
-
         
 def buscar_paciente_por_dni(lista_pacientes):
     dni = input("Ingrese el DNI del paciente")
