@@ -44,7 +44,8 @@ def main():
                     grupo_sanguineo = validar_input("Ingrese el grupo sanguíneo del paciente: ", validar_grupo_sanguineo,
                                                      "El grupo sanguineo debe de ser: A, B, AB, 0, + o -")
 
-                    lista_pacientes, contador_pacientes_id = cargar_paciente(lista_pacientes, contador_pacientes_id, nombre, apellido, edad, altura, peso, grupo_sanguineo, dni)
+                    lista_pacientes, contador_pacientes_id = cargar_paciente(lista_pacientes, contador_pacientes_id,
+                                                                              nombre, apellido, edad, altura, peso, grupo_sanguineo, dni)
                     if lista_pacientes:
                         pacientes_ingresados = True
 

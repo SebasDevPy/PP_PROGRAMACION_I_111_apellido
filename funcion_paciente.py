@@ -29,7 +29,7 @@ def crear_paciente(id: int, nombre, apellido, dni, grupo_sanguineo, peso, altura
 
 def ingreso_datos_pacientes(lista_pacientes, nombre, apellido, edad, altura, peso, grupo_sanguineo, dni):
     try:
-        nombre_valido, apellido_valido, edad_valida, altura_valida, peso_valido, grupo_sanguineo_valido, dni_valido, dni_modificado = validar_datos_paciente(nombre, apellido, edad, altura, peso, grupo_sanguineo, dni)
+        nombre_valido, apellido_valido, edad_valida, altura_valida,peso_valido, grupo_sanguineo_valido, dni_valido, dni_modificado = validar_datos_paciente(nombre, apellido, edad, altura, peso, grupo_sanguineo, dni)
 
         if nombre_valido and apellido_valido and edad_valida and altura_valida and peso_valido and grupo_sanguineo_valido and dni_valido:
             nuevo_id = len(lista_pacientes)
