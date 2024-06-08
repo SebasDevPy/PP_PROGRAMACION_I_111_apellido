@@ -12,7 +12,7 @@ def leer_pacientes_desde_csv(lista_pacientes, contador_pacientes_id):
             for row in reader:
                 paciente_id = int(row["id"])
                 if paciente_id > contador_pacientes_id:
-                    contador_pacientes_id = paciente_id 
+                    contador_pacientes_id = paciente_id +1
                 paciente = {
                     "id": paciente_id,
                     "nombre": convertir_primera_letra_mayuscula(row["nombre"]),
@@ -28,6 +28,8 @@ def leer_pacientes_desde_csv(lista_pacientes, contador_pacientes_id):
         print("Datos cargados correctamente desde pacientes.csv")   
     except FileNotFoundError:
         print("Archivo pacientes.csv no encontrado. Se iniciará con una lista vacía.")
-    except Exception as e:
+    except csv.Error as e:
         print(f"Error al leer el archivo pacientes.csv: {e}")
+    except Exception as e:
+        print(f"Error inesperado: {e}")
     return lista_pacientes, contador_pacientes_id

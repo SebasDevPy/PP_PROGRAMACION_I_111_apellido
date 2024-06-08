@@ -40,17 +40,30 @@ def validar_grupo_sanguineo(sangre: str) -> bool:
 
 def validar_nombre_apellido(nombre_completo: str):
     try:
-        if nombre_completo.isalpha() or "'" in nombre_completo:
-            if nombre_completo == nombre_completo.capitalize() and len(nombre_completo) <= 20:
-                return True
-        return False
+        if nombre_completo == "" or nombre_completo is None:
+            return False
+        if len(nombre_completo) > 20:
+            return False
+        nombre_completo = nombre_completo.replace("-", "").replace("'", "").title()
+        return True
     except Exception as e:
         print(f"Error en validar_nombre_apellido: {e}")
         return False
-
+    
 def validar_edad(edad: int) -> bool:
     try:
         edad_int = int(edad)
         return 1 <= edad_int <= 120
     except ValueError:
         return False
+
+def validar_input(mensaje, validacion, mensaje_error):
+    """
+    Función para solicitar una entrada al usuario y validarla según la función de validación proporcionada.
+    """
+    while True:
+        entrada = input(mensaje)
+        if validacion(entrada):
+            return entrada
+        else:
+            print(mensaje_error)

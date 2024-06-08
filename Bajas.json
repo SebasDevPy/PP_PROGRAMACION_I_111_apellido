@@ -1,1 +1,24 @@
-[]
+[
+    {
+        "id": 1,
+        "nombre": "Hy",
+        "apellido": "Hy",
+        "dni": "44444444",
+        "peso": "44",
+        "altura": "44",
+        "edad": "44",
+        "grupo_sanguineo": "0+",
+        "eliminado": true
+    },
+    {
+        "id": 2,
+        "nombre": "Per",
+        "apellido": "Ez",
+        "dni": "07777777",
+        "peso": "77",
+        "altura": "77",
+        "edad": "77",
+        "grupo_sanguineo": "0+",
+        "eliminado": true
+    }
+]

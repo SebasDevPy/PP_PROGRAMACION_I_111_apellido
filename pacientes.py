@@ -2,19 +2,6 @@ from archivo import *
 from validaciones import *
 from funcion_paciente import *
 
-def crear_paciente(id: int, nombre, apellido, dni, grupo_sanguineo, peso, altura, edad):
-    diccionario_paciente = {
-        "id" : id,
-        "nombre" : nombre,
-        "apellido" : apellido,
-        "dni": dni,
-        "grupo_sanguineo" : grupo_sanguineo,
-        "peso" : peso,
-        "altura": int(altura),
-        "edad": edad
-    }
-    return diccionario_paciente
-
 def cargar_paciente(lista_pacientes, contador_pacientes_id, nombre, apellido, edad, altura, peso, grupo_sanguineo,
                     dni):
     try:
@@ -37,8 +24,12 @@ def cargar_paciente(lista_pacientes, contador_pacientes_id, nombre, apellido, ed
             )
 
             lista_pacientes.append(nuevo_paciente)
+            paciente_id = contador_pacientes_id
             contador_pacientes_id += 1
             guardar_pacientes_en_csv(lista_pacientes)
+            print("Paciente ingresado correctamente.")
+        else:
+            print("Datos de paciente no válidos. Por favor, verifique e intente nuevamente.")
 
         return lista_pacientes, contador_pacientes_id
     except Exception as e:
@@ -46,15 +37,16 @@ def cargar_paciente(lista_pacientes, contador_pacientes_id, nombre, apellido, ed
         return None, contador_pacientes_id
   
 def mostrar_pacientes(lista_pacientes):
+    print("Número de pacientes en la lista:", len(lista_pacientes))
     print(f'{"ID":<10} {"Nombre":<20} {"Apellido":<20} {"DNI":<10} {"Grupo Sanguineo":<20} {"Peso":<10} {"Altura":<10} {"Edad":<10}')
     for paciente in lista_pacientes:
-       print(f'{paciente["id"]:<10} {paciente["nombre"]:<20} {paciente["apellido"]:<20} {paciente["dni"]:<10} {paciente["grupo_sanguineo"]:<20} {paciente["peso"]:<10} {paciente["altura"]:<10} {paciente["edad"]:<10}')
+        if not paciente.get("eliminado", False):
+            print(f'{paciente["id"]:<10} {paciente["nombre"]:<20} {paciente["apellido"]:<20} {paciente["dni"]:<10} {paciente["grupo_sanguineo"]:<20} {paciente["peso"]:<10} {paciente["altura"]:<10} {paciente["edad"]:<10}')
 
-
+    
 def mostrar_un_paciente(un_paciente):
     print(f'{"ID":<10} {"Nombre":<20} {"Apellido":<20} {"DNI":<10} {"Grupo Sanguineo":<20} {"Peso":<10} {"Altura":<10} {"Edad":<10}')
     print(f'{un_paciente["id"]:<10} {un_paciente["nombre"]:<20} {un_paciente["apellido"]:<20} {un_paciente["dni"]:<10} {un_paciente["grupo_sanguineo"]:<20} {un_paciente["peso"]:<10} {un_paciente["altura"]:<10} {un_paciente["edad"]:<10}')
-
 
 def deshacer_ultimo_cambio(dni, lista_pacientes, historial):
     if dni in historial:
@@ -65,7 +57,6 @@ def deshacer_ultimo_cambio(dni, lista_pacientes, historial):
         print("Último cambio deshecho exitosamente.")
     else:
         print("No hay cambios que deshacer.")
-
 
 def modificar_paciente(dni, lista_pacientes, historial):
     paciente_encontrado = False
@@ -155,8 +146,7 @@ def modificar_paciente(dni, lista_pacientes, historial):
         deshacer_ultimo_cambio(dni, lista_pacientes, historial)
     elif opcion_deshacer == "2":
         print("Continuar...")
-
-        
+       
 def ordenar_pacientes(lista_pacientes, direccion):
     opciones = {
         "1": "nombre",
@@ -188,31 +178,39 @@ def ordenar_pacientes(lista_pacientes, direccion):
     else:
         print("Opción no válida.")
 
-def eliminar_paciente(lista_pacientes, dni, pacientes_eliminados):
-    paciente_encontrado = False 
-    if dni.isdigit() == False:
-        print("DNI invalido")
-        return pacientes_eliminados
-    dni = str(dni)
+def eliminar_paciente(lista_pacientes, dni, lista_pacientes_eliminados, contador_pacientes_id):
+    if  dni.isdigit() == False:
+        print("DNI inválido. Debe ser un número.")
+        return lista_pacientes, lista_pacientes_eliminados
 
-    for paciente in lista_pacientes:
+    dni = str(dni)  
+    
+    paciente_encontrado = False  
+    i = 0 
+    
+    while i < len(lista_pacientes):
+        paciente = lista_pacientes[i]
         if paciente["dni"] == dni:
-            confirmacion = input(f"¿Está seguro de eliminar al paciente {paciente['nombre']} {paciente['apellido']} con el número de DNI {dni}? s/n: ")
+            confirmacion = input(f"¿Está seguro de eliminar al paciente {paciente['nombre']} {paciente['apellido']} con el número de DNI {dni}? (s/n): ")
             if confirmacion.lower() == "s":
                 paciente["eliminado"] = True 
                 print(f"Paciente con DNI {dni} eliminado")
-                pacientes_eliminados.append(paciente)
+                lista_pacientes_eliminados.append(paciente)
+                lista_pacientes.remove(paciente)
+                paciente_encontrado = True
+                break
+            elif confirmacion.lower() == "n":
+                print("Eliminación cancelada.")
                 paciente_encontrado = True
                 break
             else:
-                print("Eliminación cancelada")
-                break
-    
-    if paciente_encontrado == False:
-        print(f"No se encontró ningún paciente con el DNI {dni}.")
-    
-    return pacientes_eliminados
-        
+                print("Respuesta no válida. Por favor, ingrese 's' para confirmar o 'n' para cancelar.")
+        else:
+            i += 1
+    if  paciente_encontrado == False:
+        print(f"No se encontró ningún paciente con el DNI {dni}.")       
+    return lista_pacientes, lista_pacientes_eliminados, contador_pacientes_id
+      
 def buscar_paciente_por_dni(lista_pacientes, dni):
     
     for paciente in lista_pacientes:
@@ -220,28 +218,15 @@ def buscar_paciente_por_dni(lista_pacientes, dni):
             return paciente
     return None
       
-
 def calcular_promedio(lista_pacientes, campo):
-    print("Elija el promedio que desea calcular: ")
-    print("1. Edad")
-    print("2. Altura")
-    print("3. Peso")
-    opcion = input("Ingrese el numero de la opcion: ")
-
-    if len(lista_pacientes) == 0:
-        print("No hay pacientes para calcular el promedio")
-        return 0
-    if opcion == "1":
-        suma_edad = sum(int(paciente["edad"]) for paciente in lista_pacientes)
-        promedio_edad = suma_edad / len(lista_pacientes)
-        print(f"El promedio de edad de los pacientes es: {promedio_edad}")
-    elif opcion == "2":
-        suma_altura = sum(int(paciente["altura"])for paciente in lista_pacientes)
-        promedio_altura = suma_altura / len(lista_pacientes)
-        print(f"El promedio de altura de los pacientes es: {promedio_altura}")
-    elif opcion == "3":
-        suma_peso = sum(float(paciente["peso"]) for paciente in lista_pacientes)
-        promedio_peso = suma_peso / len(lista_pacientes)
-        print(f"El promedio del peso de los pacientes es : {promedio_peso}")
-    else:
-        print("Opcion no valida, debe seleccionar entre: Edad, Altura o Peso")
+    try:
+        suma_campo = sum(float(paciente[campo]) for paciente in lista_pacientes)
+        promedio = suma_campo / len(lista_pacientes)
+        print(f"El promedio de {campo} de los pacientes es: {promedio}")
+        return promedio
+    except KeyError:
+        print(f"Campo '{campo}' no encontrado en los datos de los pacientes.")
+        return None
+    except ZeroDivisionError:
+        print("No hay pacientes en la lista.")
+        return None
