@@ -1,6 +1,6 @@
-from funciones import *
 from archivo import *
-from inputs import *
+from validaciones import *
+from funcion_paciente import *
 
 def crear_paciente(id: int, nombre, apellido, dni, grupo_sanguineo, peso, altura, edad):
     diccionario_paciente = {
@@ -10,34 +10,41 @@ def crear_paciente(id: int, nombre, apellido, dni, grupo_sanguineo, peso, altura
         "dni": dni,
         "grupo_sanguineo" : grupo_sanguineo,
         "peso" : peso,
-        "altura": altura,
+        "altura": int(altura),
         "edad": edad
     }
     return diccionario_paciente
 
-def cargar_paciente(lista_pacientes, contador_pacientes_id):
-    if lista_pacientes is None:
-        lista_pacientes = []
-        
-    
-    datos_paciente = ingreso_datos_pacientes()
+def cargar_paciente(lista_pacientes, contador_pacientes_id, nombre, apellido, edad, altura, peso, grupo_sanguineo,
+                    dni):
+    try:
+        if lista_pacientes is None:
+            lista_pacientes = []
 
-    nuevo_paciente = crear_paciente(
-        contador_pacientes_id,
-        datos_paciente["nombre"],
-        datos_paciente["apellido"],
-        datos_paciente["dni"],
-        datos_paciente["grupo sanguineo"],
-        datos_paciente["peso"],
-        datos_paciente["altura"],
-        datos_paciente["edad"]
-    )
-    
-    lista_pacientes.append(nuevo_paciente)
-    contador_pacientes_id += 1
-    guardar_pacientes_en_csv(lista_pacientes)
-    return lista_pacientes, contador_pacientes_id
+        datos_paciente, validacion = ingreso_datos_pacientes(lista_pacientes, nombre, apellido, edad, altura, peso,
+                                                             grupo_sanguineo, dni)
 
+        if validacion:
+            nuevo_paciente = crear_paciente(
+                contador_pacientes_id,
+                datos_paciente["nombre"],
+                datos_paciente["apellido"],
+                datos_paciente["dni"],
+                datos_paciente["grupo_sanguineo"],
+                datos_paciente["peso"],
+                datos_paciente["altura"],
+                datos_paciente["edad"]
+            )
+
+            lista_pacientes.append(nuevo_paciente)
+            contador_pacientes_id += 1
+            guardar_pacientes_en_csv(lista_pacientes)
+
+        return lista_pacientes, contador_pacientes_id
+    except Exception as e:
+        print(f"Error en cargar_paciente: {e}")
+        return None, contador_pacientes_id
+  
 def mostrar_pacientes(lista_pacientes):
     print(f'{"ID":<10} {"Nombre":<20} {"Apellido":<20} {"DNI":<10} {"Grupo Sanguineo":<20} {"Peso":<10} {"Altura":<10} {"Edad":<10}')
     for paciente in lista_pacientes:
@@ -50,10 +57,10 @@ def mostrar_un_paciente(un_paciente):
 
 
 def deshacer_ultimo_cambio(dni, lista_pacientes, historial):
-    if id in historial:
-        ultimo_cambio = historial[id].pop()
+    if dni in historial:
+        ultimo_cambio = historial[dni].pop()
         for paciente in lista_pacientes:
-            if paciente["id"] == id:
+            if paciente["dni"] == dni:
                 paciente.update(ultimo_cambio)
         print("Último cambio deshecho exitosamente.")
     else:
@@ -93,6 +100,13 @@ def modificar_paciente(dni, lista_pacientes, historial):
             campo = opciones[opcion]
             nuevo_valor = input(f"Ingrese el nuevo valor para {campo}: ")
 
+            if campo.lower() == "grupo sanguineo":
+                if validar_grupo_sanguineo(nuevo_valor):
+                    print("Modificando grupo sanguíneo...")
+                    paciente["grupo_sanguineo"] = nuevo_valor.upper()  
+                else:
+                    print("Grupo sanguíneo inválido.")
+
             if campo.lower() == "nombre" or campo.lower() == "apellido":
                 if validar_nombre_apellido(nuevo_valor):
                     paciente[campo.lower()] = nuevo_valor.title()
@@ -103,11 +117,7 @@ def modificar_paciente(dni, lista_pacientes, historial):
                     paciente[campo.lower()] = str(nuevo_valor)
                 else:
                     print("DNI invalido.")
-            elif campo.lower() == "grupo sanguineo":
-                if validar_grupo_sanguineo(nuevo_valor):
-                    paciente[campo.lower()] = nuevo_valor.upper()
-                else:
-                    print("Grupo sanguineo invalido.")
+
             elif campo.lower() == "peso":
                 if validar_peso(nuevo_valor):
                     paciente[campo.lower()] = float(nuevo_valor)
@@ -128,7 +138,7 @@ def modificar_paciente(dni, lista_pacientes, historial):
             if deshacer.lower() == "s":
                 deshacer_ultimo_cambio(dni, lista_pacientes, historial)
         else:
-            print("Opcion no valida")
+            print("Opcion no valida, ingrese un numero del 1 al 7")
 
         continuar = input("¿Desea editar otro campo? (s/n): ")
         if continuar.lower() != "s":
@@ -203,15 +213,15 @@ def eliminar_paciente(lista_pacientes, dni, pacientes_eliminados):
     
     return pacientes_eliminados
         
-def buscar_paciente_por_dni(lista_pacientes):
-    dni = input("Ingrese el DNI del paciente")
+def buscar_paciente_por_dni(lista_pacientes, dni):
+    
     for paciente in lista_pacientes:
         if paciente["dni"] == dni:
-            mostrar_un_paciente(paciente) 
-            return
-    print("Paciente no encontrado...")  
+            return paciente
+    return None
+      
 
-def calcular_promedio(lista_pacientes):
+def calcular_promedio(lista_pacientes, campo):
     print("Elija el promedio que desea calcular: ")
     print("1. Edad")
     print("2. Altura")

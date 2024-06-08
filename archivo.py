@@ -1,45 +1,6 @@
 import csv
 import json
-
-def leer_pacientes_desde_csv(lista_pacientes, contador_pacientes_id):
-    """
-    Lee los datos de los pacientes desde un archivo CSV y los agrega a una lista.
-
-    Args:
-        lista_pacientes (list): Lista que almacenará los pacientes leídos.
-        contador_pacientes_id (int): Contador para el ID de los pacientes.
-
-    Returns:
-        tuple: Una tupla con la lista actualizada de pacientes y el nuevo contador de ID.
-    """
-
-    try:
-        with open("pacientes.csv", mode="r", newline="", encoding = "utf-8") as file:
-            reader = csv.DictReader(file)
-            for row in reader:
-                paciente_id = int(row["id"])
-                if paciente_id > contador_pacientes_id:
-                    contador_pacientes_id = paciente_id 
-                paciente = {
-                    "id": paciente_id,
-                    "nombre": row["nombre"],
-                    "apellido": row["apellido"],
-                    "dni": str(row["dni"]),
-                    "grupo_sanguineo": row["grupo_sanguineo"],
-                    "peso": float(row["peso"]),
-                    "altura": row["altura"],
-                    "edad": row["edad"]
-                }
-                lista_pacientes.append(paciente)
-            contador_pacientes_id += 1
-        print("Datos cargados correctamente desde pacientes.csv")   
-    except FileNotFoundError:
-        print("Archivo pacientes.csv no encontrado. Se iniciará con una lista vacía.")
-    except Exception as e:
-        print(f"Error al leer el archivo pacientes.csv: {e}")
-    return lista_pacientes, contador_pacientes_id
-
-
+from recursos import *
 
 def guardar_pacientes_en_csv(lista_pacientes):
     """
@@ -56,10 +17,13 @@ def guardar_pacientes_en_csv(lista_pacientes):
             writer.writeheader()
             for paciente in lista_pacientes:
                 paciente["dni"] = str(paciente["dni"])
+                paciente["grupo_sanguineo"] = paciente.pop("grupo_sanguineo", "")
+                paciente = {key.replace(" ", "_").lower(): value for key, value in paciente.items()}
                 writer.writerow(paciente)
         print("Datos guardados correctamente en pacientes.csv")
     except Exception as e:
         print(f"Error al guardar en el archivo pacientes.csv: {e}")
+
 
 
 def guardar_pacientes_eliminados_en_json(lista_pacientes_eliminados):
