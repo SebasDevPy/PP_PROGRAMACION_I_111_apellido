@@ -102,7 +102,7 @@ def validar_nombre_apellido(nombre_completo: str):
             return False
         palabras = nombre_completo.split()
         for palabra in palabras:
-            if len(palabra) > 20 or not palabra[0].isupper() or not palabra[1:].islower() or not palabra.isalpha():
+            if len(palabra) > 20 == False or palabra[0].isupper() == False or palabra[1:].islower() == False or palabra.isalpha() == False:
                 return False
         return True
     except Exception as e:

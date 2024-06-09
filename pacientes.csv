@@ -1,7 +1,7 @@
 id,nombre,apellido,dni,grupo_sanguineo,peso,altura,edad,eliminado
 1,Juan,Pedro,66666666,ab+,100.0,120,88,
 4,Mart,In,09999999,0+,99.0,99,99,
-6,Marco,Pedro,35019993,AB+,55.5,30,44,
+6,Marco,Pedro,35019993,ab+,55.5,30,44,
 7,Sad,Ir,35648794,0+,30.0,30,30,
 9,Uh,Hu,65478945,0+,64.0,64,64,
 10,Fr,Fr,78920000,0+,78.0,78,78,
@@ -16,4 +16,5 @@ id,nombre,apellido,dni,grupo_sanguineo,peso,altura,edad,eliminado
 25,Hambur,Guesa,88888888,0+,87.0,87,87,
 27,Juan,Lapuerta,45689789,0+,45.0,45,45,
 29,Rico,Lico,56478945,0+,56.0,56,56,
-31,Acri,Lico,75200060,0+,45,65,65,
+31,Acri,Lico,75200060,0+,45.0,65,65,
+33,Pepe,Pepe,07894561,0+,180,120,88,
