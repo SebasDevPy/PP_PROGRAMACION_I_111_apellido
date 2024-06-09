@@ -13,7 +13,7 @@ def mostrar_menu(pacientes_ingresados):
         ]
     else:
         opciones = ["1. Ingresar paciente", "7. Guardar y Salir"]   
-    print("\n--- Menú Principal ---\n" + "\n".join(opciones) + "\n")
+    print("\n--- Menu Principal ---\n" + "\n".join(opciones) + "\n")
     
 def main():
     try:
@@ -21,27 +21,26 @@ def main():
         lista_pacientes_eliminados = cargar_pacientes_eliminados_desde_json([])
         historial = {}
         pacientes_ingresados = False
-        pacientes_eliminados = []
-        
+         
         while True:
             if pacientes_ingresados:
                 mostrar_menu(pacientes_ingresados)
-                opcion = input("Seleccione una opción: ")
+                opcion = input("Seleccione una opcion: ")
             else:
                 mostrar_menu(pacientes_ingresados)
-                opcion = input("Debe ingresar al menos un paciente antes de utilizar esta opción. Seleccione una opción: ")
+                opcion = input("Debe ingresar al menos un paciente antes de utilizar esta opcion. Seleccione una opcion: ")
 
             match opcion:
                 case "1":
                     nombre = validar_input("Ingrese el nombre del paciente: ", validar_nombre_apellido,
-                                           "El nombre no puede ser de más de 20 caracteres y debe comenzar con mayúscula")
+                                           "El nombre no puede ser de mas de 20 caracteres y debe comenzar con mayuscula")
                     apellido = validar_input("Ingrese el apellido del paciente: ", validar_nombre_apellido,
-                                             "El nombre no puede ser de más de 20 caracteres y debe comenzar con mayúscula")
+                                             "El nombre no puede ser de mas de 20 caracteres y debe comenzar con mayuscula")
                     edad = validar_input("Ingrese la edad del paciente: ", validar_edad, "La edad debe de ser entre 1 y 120 ")
                     altura = validar_input("Ingrese la altura del paciente: ", validar_altura, "La altura debe de ser entre 30 y 230")
                     peso = validar_input("Ingrese el peso del paciente: ", validar_peso, "El peso debe de ser entre 10 y 300")
                     dni = validar_input("Ingrese el DNI del paciente: ", validar_dni, "El DNI debe ir sin puntos, entre 4000000 y 99999999.")
-                    grupo_sanguineo = validar_input("Ingrese el grupo sanguíneo del paciente: ", validar_grupo_sanguineo,
+                    grupo_sanguineo = validar_input("Ingrese el grupo sanguineo del paciente: ", validar_grupo_sanguineo,
                                                      "El grupo sanguineo debe de ser: A, B, AB, 0, + o -")
 
                     lista_pacientes, contador_pacientes_id = cargar_paciente(lista_pacientes, contador_pacientes_id,
@@ -71,7 +70,7 @@ def main():
                             guardar_pacientes_en_csv(lista_pacientes)
                             guardar_pacientes_eliminados_en_json(lista_pacientes_eliminados)
                         else:
-                            print("DNI inválido. Debe ser un número.\n")
+                            print("DNI invalido. Debe ser un numero.\n")
 
                 case "4":
                     mostrar_pacientes(lista_pacientes)
@@ -95,7 +94,7 @@ def main():
                     break
 
                 case _:
-                    print("Opción no válida. Por favor, seleccione una opción del menú.\n")
+                    print("Opcion no valida. Por favor, seleccione una opcion del menu.\n")
 
             input("\nPresione Enter para continuar...")
             system("cls")
