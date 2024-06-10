@@ -12,7 +12,7 @@ def mostrar_menu(pacientes_ingresados):
             "6. Calcular promedio","7 Determinar compatibilidad", "8. Guardar y Salir"
         ]
     else:
-        opciones = ["1. Ingresar paciente", "7. Guardar y Salir"]   
+        opciones = ["1. Ingresar paciente", "8. Guardar y Salir"]   
     print("\n--- Menu Principal ---\n" + "\n".join(opciones) + "\n")
     
 def main():

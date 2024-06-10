@@ -1,1 +1,24 @@
-[]
+[
+    {
+        "id": 15,
+        "nombre": "Sebas",
+        "apellido": "Casti",
+        "dni": "04000000",
+        "peso": 120.0,
+        "altura": "30",
+        "edad": "3",
+        "grupo_sanguineo": "ab+",
+        "eliminado": true
+    },
+    {
+        "id": 3,
+        "nombre": "Sebastian",
+        "apellido": "Casti\u00f1eiras",
+        "dni": "35019993",
+        "peso": 90.0,
+        "altura": "99",
+        "edad": "99",
+        "grupo_sanguineo": "ab+",
+        "eliminado": true
+    }
+]
