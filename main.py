@@ -9,7 +9,7 @@ def mostrar_menu(pacientes_ingresados):
         opciones = [
             "1. Ingresar paciente", "2. Buscar y Modificar paciente", "3. Eliminar paciente", 
             "4. Mostrar todos los pacientes", "5. Ordenar pacientes", 
-            "6. Calcular promedio", "7. Guardar y Salir"
+            "6. Calcular promedio","7 Determinar compatibilidad", "8. Guardar y Salir"
         ]
     else:
         opciones = ["1. Ingresar paciente", "7. Guardar y Salir"]   
@@ -88,6 +88,10 @@ def main():
                         print("Opción no válida. Debe seleccionar una de las opciones proporcionadas.\n")
 
                 case "7":
+                    dni_paciente = input("Ingrese el dni del paciente: ")
+                    determinar_compatibilidad(dni_paciente, lista_pacientes)
+
+                case "8":
                     print("Guardando datos y saliendo del programa...\n")
                     guardar_pacientes_en_csv(lista_pacientes)
                     guardar_pacientes_eliminados_en_json(lista_pacientes_eliminados)

@@ -232,6 +232,7 @@ def ordenar_pacientes(lista_pacientes, direccion):
                     if str(lista_pacientes[j][criterio]) < str(lista_pacientes[j + 1][criterio]):
                         lista_pacientes[j], lista_pacientes[j + 1] = lista_pacientes[j + 1], lista_pacientes[j]
         mostrar_pacientes(lista_pacientes)
+        guardar_pacientes_en_csv(lista_pacientes)
     else:
         print("Opción no valida.")
 
@@ -322,3 +323,60 @@ def calcular_promedio(lista_pacientes, campo):
     except ZeroDivisionError:
         print("No hay pacientes en la lista.")
         return None
+
+def determinar_compatibilidad(dni, lista_pacientes):    
+    paciente = None
+
+    for s in lista_pacientes:
+        if s["dni"] == dni:
+            paciente = s
+            break
+
+    if paciente is None:
+        print("No hay paciente")
+        return
+    
+    grupo_sanguineo = paciente["grupo_sanguineo"]
+
+    if grupo_sanguineo == "0-":
+        puede_recibir = ["0-"]
+        puede_donar = ["0-", "0+", "A-", "A+", "B+", "B-", "AB+", "AB-"]
+    elif grupo_sanguineo == "0+":
+        puede_recibir = ["0-", "0+"]
+        puede_donar = ["0+", "A+", "B+", "AB+"]
+    elif grupo_sanguineo == "A-":
+        puede_recibir = ["0-", "A-"]
+        puede_donar = ["A+", "A-", "AB+", "AB-"]
+    elif grupo_sanguineo == "A+":
+        puede_recibir = ["0-", "0+", "A-", "A+"]
+        puede_donar = ["AB+", "A+"]
+    elif grupo_sanguineo == "B-":
+        puede_recibir = ["0-", "B-"]
+        puede_donar = ["0-", "B-"]
+    elif grupo_sanguineo == "B+":
+        puede_recibir = ["0-", "0+", "B-", "B+"]
+        puede_donar = ["AB-", "AB+", "B-", "B+"]
+    elif grupo_sanguineo == "AB+":
+        puede_recibir = ["0-", "0+", "A-", "A+", "B+", "B-", "AB+", "AB-"]
+        puede_donar = ["AB+"]
+    elif grupo_sanguineo == "AB-":
+        puede_recibir =["0-", "A-", "B-", "AB-"]
+        puede_donar =["AB+", "AB-"]
+    else:
+        print("Grupo sanguineo no existente.")
+  
+    print(f"El paciente con DNI: {dni} y grupo sanguineo {grupo_sanguineo} puede donar a: {puede_donar}")
+    print(f"El paciente con DNI: {dni} y grupo sanguineo {grupo_sanguineo} puede recibir de: {puede_recibir}")
+     
+    donante_posible = [
+        pa for pa in lista_pacientes
+        if pa["grupo_sanguineo"] in puede_recibir and pa["dni"] != dni
+    ][:3]
+    if donante_posible:
+        print(f"Los primeros tres donantes compatibles son {[paciente["dni"] for paciente in donante_posible]} ")
+        indice = 1
+        for donante in donante_posible:
+            print(f"{indice}. DNI: {donante_posible}, Nombre: {donante["nombre"]}, Apellido:{donante["apellido"]}")
+            indice += 1
+    else:
+        print("No se encontraron donantes. ")
