@@ -19,19 +19,23 @@ def validar_datos_paciente(nombre, apellido, edad, altura, peso, grupo_sanguineo
         ValueError: Si el argumento nombre_completo es una cadena vacia o None.
    
     """
-    nombre_valido = validar_nombre_apellido(nombre)
-    apellido_valido = validar_nombre_apellido(apellido)
-    edad_valida = validar_edad(edad)
-    altura_valida = validar_altura(altura)
-    peso_valido = validar_peso(peso)
-    grupo_sanguineo_valido = validar_grupo_sanguineo(grupo_sanguineo)
-    dni_valido, dni_modificado = validar_dni(dni)
+    try:
+        nombre_valido = validar_nombre_apellido(nombre)
+        apellido_valido = validar_nombre_apellido(apellido)
+        edad_valida = validar_edad(edad)
+        altura_valida = validar_altura(altura)
+        peso_valido = validar_peso(peso)
+        grupo_sanguineo_valido = validar_grupo_sanguineo(grupo_sanguineo)
+        dni_valido, dni_modificado = validar_dni(dni)
+        
+        return (
+            nombre_valido, apellido_valido, edad_valida, altura_valida, 
+            peso_valido, grupo_sanguineo_valido, dni_valido, dni_modificado
+        )
+    except Exception as e:
+        print(f"Se ha producido un error en validar_datos_paciente: {e}")
+        
     
-    return (
-        nombre_valido, apellido_valido, edad_valida, altura_valida, 
-        peso_valido, grupo_sanguineo_valido, dni_valido, dni_modificado
-    )
-
 def crear_paciente(id: int, nombre, apellido, dni, grupo_sanguineo, peso, altura, edad):
     """
     Crea un diccionario con los datos de un paciente.

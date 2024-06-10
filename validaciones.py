@@ -12,12 +12,17 @@ def validar_dni(dni: int) -> tuple[bool, str]:
         ValueError: Si el argumento dni no puede ser convertido a entero.
 
     """
+
+
     try:
-        if dni.isdigit() == False:
-            return False, None
-        if "." in str(dni):
-            return False, None
-        dni = int(dni)
+        
+        dni_str = str(dni)
+        if not dni_str.isdigit() or len(dni_str) > 8:
+            print("El DNI no tiene el formato correcto.")
+            return False, None     
+        if dni_str == '4000000':
+            dni_str = '0' + dni_str
+        dni = int(dni_str)
         if dni >= 4000000 and dni <= 99999999:
             dni_str = str(dni)
             if len(dni_str) < 8:
@@ -27,6 +32,7 @@ def validar_dni(dni: int) -> tuple[bool, str]:
             return False, None
     except ValueError:
         return False, None
+
 
 def validar_altura(altura: int) -> bool:
     """
@@ -143,5 +149,15 @@ def validar_input(mensaje, validacion, mensaje_error):
         entrada = input(mensaje)
         if validacion(entrada):
             return entrada
+        else:
+            print(mensaje_error)
+
+
+def validar_input_dos(mensaje, validador, mensaje_error):
+    while True:
+        entrada = input(mensaje)
+        valido, valor = validador(entrada)
+        if valido:
+            return valor
         else:
             print(mensaje_error)

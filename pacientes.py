@@ -50,7 +50,7 @@ def cargar_paciente(lista_pacientes, contador_pacientes_id, nombre, apellido, ed
             
         else:
             print("Datos de paciente no validos. Por favor, verifique e intente nuevamente.")
-
+            
         return lista_pacientes, contador_pacientes_id
     except Exception as e:
         print(f"Error en cargar_paciente: {e}")
@@ -192,6 +192,7 @@ def modificar_paciente(dni, lista_pacientes, historial):
         guardar_cambios = input("Quiere guardar los cambios? s/n: ")
         if guardar_cambios.lower() == "s":
             lista_pacientes[lista_pacientes.index(paciente)] = paciente
+            guardar_pacientes_en_csv(lista_pacientes)
         else:
             print("Descartando cambios")
      

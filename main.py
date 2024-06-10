@@ -39,7 +39,7 @@ def main():
                     edad = validar_input("Ingrese la edad del paciente: ", validar_edad, "La edad debe de ser entre 1 y 120 ")
                     altura = validar_input("Ingrese la altura del paciente: ", validar_altura, "La altura debe de ser entre 30 y 230")
                     peso = validar_input("Ingrese el peso del paciente: ", validar_peso, "El peso debe de ser entre 10 y 300")
-                    dni = validar_input("Ingrese el DNI del paciente: ", validar_dni, "El DNI debe ir sin puntos, entre 4000000 y 99999999.")
+                    dni = validar_input_dos("Ingrese el DNI del paciente: ", validar_dni, "El DNI debe ir sin puntos, entre 4000000 y 99999999.")
                     grupo_sanguineo = validar_input("Ingrese el grupo sanguineo del paciente: ", validar_grupo_sanguineo,
                                                      "El grupo sanguineo debe de ser: A, B, AB, 0, + o -")
 
